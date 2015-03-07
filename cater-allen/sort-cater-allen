@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+tmp="tmp.csv"
+
+# loop inputs
+for file; do
+    # fix date (dd/mm/yyyy -> yyyy/mm/dd) & sort into tmp file
+    ./fix-dates "$file" | sed -E 's/^(..)(....)(....)/\3\2\1/' | sort > "$tmp"
+
+    # seperate transactions into $year-tmp files
+    awk -F '-' '{print $0 >> $1"-tmp"}' "$tmp"
+
+    # merge with existing file
+    for year in `awk -F '-' '{print $1}' "$tmp" | sort | uniq`; do
+        # define files
+        file=""$year".csv"
+        target=""$year"-tmp"
+
+        # make sure existing file exists
+        touch $file
+
+        # combine existing file into tmp file
+        cat $file >> $target
+
+        # sort and dedupe tmp file into existing file
+        sort $target | uniq > $file
+
+        # tidy up year tmp file
+        rm $target
+    done
+done
+
+# tidy up
+rm $tmp
