@@ -19,16 +19,16 @@ for file; do
         target="$year-tmp"
 
         # make sure existing file exists
-        touch $file
+        touch "$file"
 
         # combine existing file into tmp file
-        cat $file >> $target
+        cat "$file" >> "$target"
 
         # sort and dedupe tmp file into existing file
-        sort $target | uniq > $file
+        sort "$target" | uniq > "$file"
 
         # tidy up year tmp file
-        rm $target
+        rm "$target"
     done
 done
 

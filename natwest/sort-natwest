@@ -25,17 +25,17 @@ for file; do
         mkdir -p "$account"
 
         # Extract years from transaction in given account and loop
-        for year in $(grep $account "$tmp" | awk -F '-' '{print $1}' | sort | uniq); do
+        for year in $(grep "$account" "$tmp" | awk -F '-' '{print $1}' | sort | uniq); do
             # extract transactions using year and account
             egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
 
             target="$account/$year.csv"
             # make sure target file exists
-            touch $target
+            touch "$target"
 
             # combine existing target file with output to avoid duplicates/overwriting
-            cat $target >> tmp-sorted.csv
-            sort tmp-sorted.csv | uniq > $target
+            cat "$target" >> tmp-sorted.csv
+            sort tmp-sorted.csv | uniq > "$target"
         done
     done
 done
