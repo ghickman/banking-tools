@@ -29,7 +29,7 @@ for file; do
             # extract transactions using year and account
             egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
 
-            target=""$account"/"$year".csv"
+            target="$account/$year.csv"
             # make sure target file exists
             touch $target
 

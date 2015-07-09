@@ -15,8 +15,8 @@ for file; do
     # merge with existing file
     for year in $(awk -F '-' '{print $1}' "$tmp" | sort | uniq); do
         # define files
-        file=""$year".csv"
-        target=""$year"-tmp"
+        file="$year.csv"
+        target="$year-tmp"
 
         # make sure existing file exists
         touch $file
