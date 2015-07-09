@@ -25,7 +25,7 @@ for file; do
         mkdir -p "$account"
 
         # Extract years from transaction in given account and loop
-        for year in `grep $account "$tmp" | awk -F '-' '{print $1}' | sort | uniq`; do
+        for year in $(grep $account "$tmp" | awk -F '-' '{print $1}' | sort | uniq); do
             # extract transactions using year and account
             egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
 
