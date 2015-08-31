@@ -12,7 +12,7 @@ for file; do
     # remove blank lines
     # sort and uniq
     tail -n +4 "$file" | \
-        ./fix-dates-natwest | \
+        which fix-dates-natwest || ./fix-dates-natwest | \
         sed -E 's/^(..)\/(..)\/(....)(.*)/\3-\2-\1\4/' | \
         sed -E '/^$/d' | \
         sort | uniq > "$tmp"
