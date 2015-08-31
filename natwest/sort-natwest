@@ -2,6 +2,7 @@
 
 set -e
 
+fix_dates="$(which fix-dates-natwest || ./fix-dates-natwest)"
 tmp="tmp.csv"
 
 # make sure the tmp files exist
@@ -15,7 +16,7 @@ for file; do
     # remove blank lines
     # sort and uniq
     tail -n +4 "$file" | \
-        which fix-dates-natwest || ./fix-dates-natwest | \
+        $fix_dates | \
         sed -E 's/^(..)\/(..)\/(....)(.*)/\3-\2-\1\4/' | \
         sed -E '/^$/d' | \
         sort | uniq > "$tmp"

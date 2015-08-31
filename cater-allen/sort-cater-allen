@@ -2,13 +2,13 @@
 
 set -e
 
+fix_dates="$(which fix-dates-cater-allen || ./fix-dates-cater-allen)"
 tmp="tmp.csv"
 
 # loop inputs
 for file; do
     # fix date (dd/mm/yyyy -> yyyy/mm/dd) & sort into tmp file
-    $(which fix-dates-cater-allen || ./fix-dates-cater-allen) "$file" | \
-        sed -E 's/^(..)(....)(....)/\3\2\1/' | sort > "$tmp"
+    $fix_dates "$file" | sed -E 's/^(..)(....)(....)/\3\2\1/' | sort > "$tmp"
 
     # seperate transactions into $year-tmp files
     awk -F '-' '{print $0 >> $1"-tmp"}' "$tmp"
