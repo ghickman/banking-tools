@@ -4,8 +4,8 @@ set -e
 
 tmp="tmp.csv"
 
-# make sure the tmp file exists
-touch "$tmp"
+# make sure the tmp files exist
+touch tmp{,-sorted}.csv
 
 # loop inputs
 for file; do
