@@ -3,10 +3,12 @@
 set -e
 
 fix_dates="$(which fix-dates-cater-allen || ./fix-dates-cater-allen)"
+output=$1
+statements="statements"
 tmp="tmp.csv"
 
 # loop inputs
-for file; do
+for file in "${@:2}"; do
     # fix date (dd/mm/yyyy -> yyyy/mm/dd) & sort into tmp file
     $fix_dates "$file" | sed -E 's/^(..)(....)(....)/\3\2\1/' | sort > "$tmp"
 
@@ -16,7 +18,7 @@ for file; do
     # merge with existing file
     for year in $(awk -F '-' '{print $1}' "$tmp" | sort | uniq); do
         # define files
-        file="$year.csv"
+        file="$output/$statements/$year.csv"
         target="$year-tmp"
 
         # make sure existing file exists
