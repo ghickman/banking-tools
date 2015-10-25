@@ -4,6 +4,7 @@ set -e
 
 fix_dates="$(which fix-dates-natwest || ./fix-dates-natwest)"
 output=$1
+statements="statements"  # where statements live in an account dir
 tmp="tmp.csv"
 
 # make sure the tmp files exist
@@ -26,15 +27,21 @@ for file in "${@:2}"; do
 
     # Extract accounts and loop
     for account in $accounts; do
-        # make sure account directory exists
-        mkdir -p "$account"
+        # find account dir with trailing characters
+        # Note: matches contain the _full_ path including contents of $output
+        match=$(find "$output" -depth 1 | grep -E "$account.*" | head -n 1)
+        [ "$match" ] && account_dir="$match" || account_dir="$output$account"
+
+        # make sure account statements directory exists
+        statements_dir="$account_dir/$statements"
+        mkdir -p "$statements_dir"
 
         # Extract years from transaction in given account and loop
         for year in $(grep "$account" "$tmp" | awk -F '-' '{print $1}' | sort | uniq); do
             # extract transactions using year and account
             egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
 
-            target="$account/$year.csv"
+            target="$statements_dir/$year.csv"
             # make sure target file exists
             touch "$target"
 
