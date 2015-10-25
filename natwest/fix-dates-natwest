@@ -31,4 +31,5 @@ def month_sub(m):
     return '{}/{}/{}'.format(m.group(1), month, m.group(3))
 
 for line in fileinput.input():
+    # output: dd mm yyyy
     sys.stdout.write(re.sub(r'^(\d{2})\s(\w{3})\s(\d{4})', month_sub, line))
