@@ -3,13 +3,14 @@
 set -e
 
 fix_dates="$(which fix-dates-natwest || ./fix-dates-natwest)"
+output=$1
 tmp="tmp.csv"
 
 # make sure the tmp files exist
 touch tmp{,-sorted}.csv
 
 # loop inputs
-for file; do
+for file in "${@:2}"; do
     # remove header
     # replace string dates for numbers
     # fix date order (dd/mm/yyyy -> yyyy-mm-dd)
