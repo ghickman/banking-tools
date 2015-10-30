@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+"""
+Build a numerical filename
+
+Takes a filename in the format foo_shortmonth-year.ext and returns
+year-month.ext
+"""
+
+import calendar
+import os
+import sys
+
+
+if len(sys.argv) > 2:
+    sys.stderr.write('Only one argument allowed\n')
+    sys.exit(1)
+
+
+filename = sys.argv[1]
+
+try:
+    ym, ext = os.path.splitext(filename.rsplit('_', 1)[1])
+    month, year = ym.split('-')
+except IndexError:
+    msg = 'Incorrect format, expected "foo_bar-herp.ext", got {}\n'
+    sys.stderr.write(msg.format(filename))
+    sys.exit(1)
+
+year = '20{}'.format(year)
+
+try:
+    month = str(list(calendar.month_abbr).index(month)).zfill(2)
+except ValueError:
+    sys.stderr.write('"{}" is not an abbreviated month\n'.format(month))
+    sys.exit(1)
+
+sys.stdout.write('{}-{}{}'.format(year, month, ext))
