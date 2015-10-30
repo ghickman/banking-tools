@@ -5,6 +5,10 @@ class BankingTools < Formula
   head "https://github.com/ghickman/banking-tools.git"
 
   def install
-    bin.install Dir["*/sort-*", "*/fix-dates-*"]
+    bin.install Dir[
+      "*/sort-*",
+      "*/fix-dates-*",
+      "halifax/halifax-fix-name",
+    ]
   end
 end
