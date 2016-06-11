@@ -8,5 +8,6 @@ help:
 test:
 	@shellcheck cater-allen/sort-cater-allen
 	@shellcheck natwest/sort-natwest
+	@shellcheck virgin-atlantic/sort-virgin-atlantic
 
 .PHONY: test
