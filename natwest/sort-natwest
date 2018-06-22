@@ -17,11 +17,11 @@ for file in "${@:2}"; do
     # fix date order (dd/mm/yyyy -> yyyy-mm-dd)
     # remove blank lines
     # sort and uniq
-    tail -n +4 "$file" | \
-        $fix_dates | \
-        sed -E 's/^(..)\/(..)\/(....)(.*)/\3-\2-\1\4/' | \
-        sed -E '/^$/d' | \
-        sort | uniq > "$tmp"
+    tail -n +4 "$file" \
+        | $fix_dates \
+        | sed -E 's/^(..)\/(..)\/(....)(.*)/\3-\2-\1\4/' \
+        | sed -E '/^$/d' \
+        | sort -u > "$TEMP_FILE"
 
     accounts=$(gawk '{sub(/\"\047/, "", $7); sub(/\"\r?$/, "", $7); print $7}' FPAT="([^,]*)|(\"[^\"]+\")" "$TEMP_FILE" | sort | uniq)
 
