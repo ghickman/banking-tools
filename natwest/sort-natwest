@@ -5,10 +5,10 @@ set -eu
 fix_dates="$(command -v fix-dates-natwest || ./fix-dates-natwest)"
 output=$1
 statements="statements"  # where statements live in an account dir
-tmp="tmp.csv"
+TEMP_FILE="tmp.csv"
 
 # make sure the tmp files exist
-touch tmp{,-sorted}.csv
+touch "$TEMP_FILE"
 
 # loop inputs
 for file in "${@:2}"; do
@@ -23,7 +23,7 @@ for file in "${@:2}"; do
         sed -E '/^$/d' | \
         sort | uniq > "$tmp"
 
-    accounts=$(gawk '{sub(/\"\047/, "", $7); sub(/\"\r?$/, "", $7); print $7}' FPAT="([^,]*)|(\"[^\"]+\")" "$tmp" | sort | uniq)
+    accounts=$(gawk '{sub(/\"\047/, "", $7); sub(/\"\r?$/, "", $7); print $7}' FPAT="([^,]*)|(\"[^\"]+\")" "$TEMP_FILE" | sort | uniq)
 
     # Extract accounts and loop
     for account in $accounts; do
@@ -37,7 +37,7 @@ for file in "${@:2}"; do
         mkdir -p "$statements_dir"
 
         # Extract years from transaction in given account and loop
-        for year in $(grep "$account" "$tmp" | awk -F '-' '{print $1}' | sort | uniq); do
+        for year in $(grep "$account" "$TEMP_FILE" | awk -F '-' '{print $1}' | sort | uniq); do
             # extract transactions using year and account
             egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
 
@@ -46,11 +46,10 @@ for file in "${@:2}"; do
             touch "$target"
 
             # combine existing target file with output to avoid duplicates/overwriting
-            cat "$target" >> tmp-sorted.csv
-            sort tmp-sorted.csv | uniq > "$target"
+            sort --unique --output "$target" "$target"
         done
     done
 done
 
 # tidy up
-rm tmp{,-sorted}.csv
+rm "$TEMP_FILE"
