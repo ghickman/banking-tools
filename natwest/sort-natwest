@@ -2,7 +2,7 @@
 
 set -eu
 
-fix_dates="$(which fix-dates-natwest || ./fix-dates-natwest)"
+fix_dates="$(command -v fix-dates-natwest || ./fix-dates-natwest)"
 output=$1
 statements="statements"  # where statements live in an account dir
 tmp="tmp.csv"
