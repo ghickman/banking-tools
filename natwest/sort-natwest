@@ -38,12 +38,12 @@ for file in "${@:2}"; do
 
         # Extract years from transaction in given account and loop
         for year in $(grep "$account" "$TEMP_FILE" | awk -F '-' '{print $1}' | sort | uniq); do
-            # extract transactions using year and account
-            egrep -i "$year.*$account" "$tmp" > tmp-sorted.csv
-
             target="$statements_dir/$year.csv"
             # make sure target file exists
             touch "$target"
+
+            # extract transactions using year and account
+            grep -i -E "$year.*$account" "$TEMP_FILE" >> "$target"
 
             # combine existing target file with output to avoid duplicates/overwriting
             sort --unique --output "$target" "$target"
