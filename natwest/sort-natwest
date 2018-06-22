@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu
 
 fix_dates="$(which fix-dates-natwest || ./fix-dates-natwest)"
 output=$1
