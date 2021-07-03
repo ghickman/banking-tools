@@ -16,6 +16,9 @@ for file in "${@:2}"; do
     sed -E 's|-|/|' | \
     sed -E 's|-|/|' | \
 
+    # strip out some less useful columns from the CSV
+    awk '{ print $1 "," $2 "," $3 "," $4 "," $5}' FPAT="([^,]*)|(\"[^\"]+\")" | \
+
     # sort into temp file
     sort > "$tmp"
 
