@@ -10,11 +10,11 @@ for file in "${@:2}"; do
     # remove header (first line)
     tail -n +2 "$file" | \
 
-    # flip date format from DD/MM/YYYY -> YYYY/MM/DD
-    sed -E 's/^(..)(....)(....)/\3\2\1/' | \
-
-    # remove non-ascii chars
-    iconv -c -f utf-8 -t ascii | \
+    # flip date format from YYYY-MM-DD -> YYYY/MM/DD
+    sed -E 's|-|/|' | \
+    sed -E 's|-|/|' | \
+    sed -E 's|-|/|' | \
+    sed -E 's|-|/|' | \
 
     # sort into temp file
     sort > "$tmp"
