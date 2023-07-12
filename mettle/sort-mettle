@@ -22,10 +22,10 @@ for file in "${@:2}"; do
     sort > "$tmp"
 
     # seperate transactions into $year-tmp files
-    awk -F '/' '{print $0 >> $1"-tmp"}' "$tmp"
+    gawk -F '/' '{print $0 >> $1"-tmp"}' "$tmp"
 
     # merge each year-tmp file with existing transactions for that year
-    for year in $(awk -F '/' '{print $1}' "$tmp" | sort | uniq); do
+    for year in $(gawk -F '/' '{print $1}' "$tmp" | sort | uniq); do
         # define files
         file="$output/$year.csv"
         target="$year-tmp"
