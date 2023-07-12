@@ -10,4 +10,4 @@ Merge transaction records into yearly files.
 
 ## Upgrade
 
-    brew reinstall --HEAD banking-tools
+    brew reinstall banking-tools
