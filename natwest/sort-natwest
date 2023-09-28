@@ -23,7 +23,7 @@ for file in "${@:2}"; do
         | sed -E '/^$/d' \
         | sort -u > "$TEMP_FILE"
 
-    accounts=$(gawk '{sub(/\"\047/, "", $7); sub(/\"\r?$/, "", $7); print $7}' FPAT="([^,]*)|(\"[^\"]+\")" "$TEMP_FILE" | sort | uniq)
+    accounts=$(gawk '{sub(/"\047/, "", $7); sub(/"\r?$/, "", $7); print $7}' FPAT='([^,]*)|("[^"]+")' "$TEMP_FILE" | sort | uniq)
 
     # Extract accounts and loop
     for account in $accounts; do
